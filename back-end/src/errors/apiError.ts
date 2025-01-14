@@ -1,11 +1,11 @@
 import { StatusCodes } from "http-status-codes";
 
 export class ApiError extends Error {
-  public readonly status: number;
+  public readonly statusCode: number;
 
   constructor(message: string, status: number) {
     super(message);
-    this.status = status;
+    this.statusCode = status;
     // Object.setPrototypeOf(this, new.target.prototype); // Corrige instanceof em TypeScript
     // Error.captureStackTrace(this);
   }

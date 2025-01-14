@@ -9,9 +9,11 @@ export const errorMiddleware = (
   _next: NextFunction,
 ): Response => {
   console.error(err);
+  let message = err.message;
 
   if (err instanceof ApiError) {
-    return res.status(err.status).json({ message: err.message });
+    message = message.replace(/\"/g, "");
+    return res.status(err.statusCode).json({ message });
   }
 
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
