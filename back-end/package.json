@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node src/server.js",
     "vercel-build": "prisma generate && prisma migrate deploy",
     "prisma:generate": "prisma generate",
     "services:up": "docker compose -f infra/compose.yaml up -d",
