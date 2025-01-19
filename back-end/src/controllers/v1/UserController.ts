@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UserService from "../services/UserService";
+import UserService from "../../services/v1/UserService";
 
 class UserController {
   async findAll(_req: Request, res: Response) {

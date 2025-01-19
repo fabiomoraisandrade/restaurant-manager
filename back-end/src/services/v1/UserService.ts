@@ -1,7 +1,7 @@
-import UserRepository from "../repositories/UserRepository";
-import { UserRequest } from "../types/UserTypes";
-import validateUser from "../validators/userValidator";
-import { ApiError } from "../errors/apiError";
+import UserRepository from "../../repositories/UserRepository";
+import { UserRequest } from "../../types/UserTypes";
+import validateUser from "../../validators/userValidator";
+import { ApiError } from "../../errors/apiError";
 
 class UserService {
   async findAll() {
