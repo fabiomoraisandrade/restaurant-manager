@@ -1,3 +1,4 @@
+import { hash } from "bcryptjs";
 import UserRepository from "../../repositories/UserRepository";
 import { UserRequest } from "../../types/UserTypes";
 import validateUser from "../../validators/userValidator";
@@ -16,6 +17,9 @@ class UserService {
     if (existingUser) {
       throw ApiError.conflict("Email is already registered.");
     }
+
+    const passwordHash = await hash(userData.password, 8);
+    userData.password = passwordHash;
 
     return UserRepository.create(userData);
   }
