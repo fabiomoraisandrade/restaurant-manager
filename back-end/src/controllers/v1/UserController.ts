@@ -14,6 +14,13 @@ class UserController {
 
     return res.json(user);
   }
+
+  async login(req: Request, res: Response) {
+    const { email, password } = req.body;
+
+    const auth = await UserService.login({ email, password });
+    return res.json(auth);
+  }
 }
 
 export default UserController;

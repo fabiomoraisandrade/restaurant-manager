@@ -55,9 +55,10 @@ describe("POST /api/v1/users", () => {
       password: "134895",
     };
 
-    await expect(UserService.create(userData)).rejects.toThrow(
-      "Email is already registered.",
-    );
+    await expect(UserService.create(userData)).rejects.toMatchObject({
+      statusCode: 409,
+      message: "Email is already registered.",
+    });
   });
 
   it("deve criar um usuário com sucesso", async () => {
