@@ -1,10 +1,13 @@
 import { hash, compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
+import dotenv from "dotenv";
 import UserRepository from "../../repositories/UserRepository";
 import { UserRequest, LoginRequest } from "../../types/UserTypes";
 import validateUser from "../../validators/userValidator";
 import validateLogin from "../../validators/loginValidator";
 import { ApiError } from "../../errors/apiError";
+
+dotenv.config({ path: ".env.development" });
 
 class UserService {
   async findAll() {
@@ -39,6 +42,8 @@ class UserService {
     if (!passwordMatch) {
       throw ApiError.unauthorized("Invalid email or password");
     }
+    console.log("JWT_SECRET:", process.env.JWT_SECRET);
+    console.log("POSTGRES_HOST:", process.env.POSTGRES_HOST);
 
     const token = sign(
       {
