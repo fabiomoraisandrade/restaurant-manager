@@ -42,8 +42,6 @@ class UserService {
     if (!passwordMatch) {
       throw ApiError.unauthorized("Invalid email or password");
     }
-    console.log("JWT_SECRET:", process.env.JWT_SECRET);
-    console.log("POSTGRES_HOST:", process.env.POSTGRES_HOST);
 
     const token = sign(
       {
