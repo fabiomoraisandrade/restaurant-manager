@@ -1,8 +1,20 @@
 import axios from "axios";
-import UserService from "../../../../src/services/v1/UserService";
-import UserRepository from "../../../../src/repositories/UserRepository";
+import prismaClient from "../../../../src/prisma";
 
-jest.mock("../../../../src/repositories/UserRepository");
+// Limpeza do banco de dados antes de cada teste
+beforeEach(async () => {
+  await prismaClient.$transaction([prismaClient.user.deleteMany()]);
+});
+
+// Limpeza extra após cada teste (opcional)
+afterEach(async () => {
+  await prismaClient.$transaction([prismaClient.user.deleteMany()]);
+});
+
+// Fecha a conexão com o Prisma após todos os testes
+afterAll(async () => {
+  await prismaClient.$disconnect();
+});
 
 describe("POST /api/v1/users", () => {
   const baseURL = "http://localhost:3333/api/v1/users";
@@ -42,46 +54,45 @@ describe("POST /api/v1/users", () => {
   });
 
   it("deve lançar erro se o email já está registrado", async () => {
-    UserRepository.findByEmail = jest.fn().mockResolvedValue({
-      id: "2",
-      name: "Nome2",
-      email: "email@teste2.com",
-      password: "789456",
+    // Cria um usuário com o email previamente registrado
+    const existingUser = await axios.post(baseURL, {
+      name: "Nome Existente",
+      email: "email@teste.com",
+      password: "senha123",
     });
 
-    const userData = {
-      name: "Nome3",
-      email: "email@teste3.com",
-      password: "134895",
-    };
+    // Tenta criar um novo usuário com o mesmo email
+    const response = await axios
+      .post(baseURL, {
+        name: "Novo Nome",
+        email: existingUser.data.email,
+        password: "novaSenha123",
+      })
+      .catch((err) => err.response);
 
-    await expect(UserService.create(userData)).rejects.toMatchObject({
-      statusCode: 409,
-      message: "Email is already registered.",
-    });
+    expect(response.status).toBe(409);
+    expect(response.data).toHaveProperty(
+      "message",
+      "Email is already registered.",
+    );
   });
 
   it("deve criar um usuário com sucesso", async () => {
-    UserRepository.findByEmail = jest.fn().mockResolvedValue(null);
-    UserRepository.create = jest.fn().mockResolvedValue({
-      id: 1,
-      name: "Jane Doe",
-      email: "test@example.com",
+    // Gera um email aleatório para evitar conflitos
+    const randomEmail = `user${Date.now()}@example.com`;
+
+    const response = await axios.post(baseURL, {
+      name: "Usuário Teste",
+      email: randomEmail,
+      password: "senhaSegura123",
     });
 
-    const userData = {
-      name: "Jane Doe",
-      email: "test@example.com",
-      password: "123456",
-    };
+    // Verifica se o status é 201 (criado com sucesso)
+    expect(response.status).toBe(201);
 
-    const user = await UserService.create(userData);
-    // console.log(`user: ${JSON.stringify(user, null, 2)}`);
-
-    expect(user).toEqual({
-      id: 1,
-      name: "Jane Doe",
-      email: "test@example.com",
-    });
+    // Verifica se as propriedades do usuário criado estão presentes na resposta
+    expect(response.data).toHaveProperty("id");
+    expect(response.data).toHaveProperty("name", "Usuário Teste");
+    expect(response.data).toHaveProperty("email", randomEmail);
   });
 });

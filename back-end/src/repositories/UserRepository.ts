@@ -12,6 +12,19 @@ class UserRepository {
     });
   }
 
+  async findById(id: string) {
+    return prismaClient.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+  }
+
   async create({ name, email, password }: UserRequest) {
     return prismaClient.user.create({
       data: {
@@ -23,6 +36,8 @@ class UserRepository {
         id: true,
         name: true,
         email: true,
+        created_at: true,
+        updated_at: true,
       },
     });
   }

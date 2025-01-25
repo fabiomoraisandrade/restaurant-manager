@@ -62,6 +62,13 @@ class UserService {
       token: token,
     };
   }
+
+  async getUserDetails(id: string) {
+    const userDetails = UserRepository.findById(id);
+    if (!userDetails) throw ApiError.badRequest("User not found");
+
+    return userDetails;
+  }
 }
 
 export default new UserService();
