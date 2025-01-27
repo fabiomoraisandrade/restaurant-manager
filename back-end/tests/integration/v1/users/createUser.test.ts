@@ -18,7 +18,7 @@ afterAll(async () => {
 
 describe("POST /api/v1/users", () => {
   const baseURL = "http://localhost:3333/api/v1/users";
-  it("deve retornar status 400 se o nome não for enviado", async () => {
+  test("deve retornar status 400 se o nome não for enviado", async () => {
     const response = await axios
       .post(baseURL, {
         email: "test@example.com",
@@ -29,7 +29,7 @@ describe("POST /api/v1/users", () => {
     expect(response.data).toHaveProperty("message", "name is required");
   });
 
-  it("deve retornar status 400 se o email não for enviado", async () => {
+  test("deve retornar status 400 se o email não for enviado", async () => {
     const response = await axios
       .post(baseURL, {
         name: "Jane Doe",
@@ -41,7 +41,7 @@ describe("POST /api/v1/users", () => {
     expect(response.data).toHaveProperty("message", "email is required");
   });
 
-  it("deve retornar status 400 se a senha não for enviada", async () => {
+  test("deve retornar status 400 se a senha não for enviada", async () => {
     const response = await axios
       .post(baseURL, {
         name: "Jane Doe",
@@ -53,7 +53,7 @@ describe("POST /api/v1/users", () => {
     expect(response.data).toHaveProperty("message", "password is required");
   });
 
-  it("deve lançar erro se o email já está registrado", async () => {
+  test("deve lançar erro se o email já está registrado", async () => {
     // Cria um usuário com o email previamente registrado
     const existingUser = await axios.post(baseURL, {
       name: "Nome Existente",
@@ -77,7 +77,7 @@ describe("POST /api/v1/users", () => {
     );
   });
 
-  it("deve criar um usuário com sucesso", async () => {
+  test("deve criar um usuário com sucesso", async () => {
     // Gera um email aleatório para evitar conflitos
     const randomEmail = `user${Date.now()}@example.com`;
 

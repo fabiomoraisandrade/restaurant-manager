@@ -20,14 +20,14 @@ class UserController {
     const { email, password } = req.body;
 
     const auth = await UserService.login({ email, password });
-    return res.json(auth);
+    return res.status(StatusCodes.OK).json(auth);
   }
 
   async getUserDetails(req: Request, res: Response) {
     const { id } = req.params;
     const userDetails = await UserService.getUserDetails(id);
 
-    return res.json(userDetails);
+    return res.status(StatusCodes.OK).json(userDetails);
   }
 }
 

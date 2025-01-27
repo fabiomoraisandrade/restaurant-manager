@@ -17,9 +17,9 @@ export const authMiddleware = async (
   next: NextFunction,
 ) => {
   const authToken = req.headers.authorization;
-  const token = authToken.split(" ")[1];
+  if (!authToken) throw ApiError.unauthorized("Token not found");
 
-  if (!token) throw ApiError.unauthorized("Token not found");
+  const token = authToken.split(" ")[1];
 
   const validToken = await validateToken(token);
 
