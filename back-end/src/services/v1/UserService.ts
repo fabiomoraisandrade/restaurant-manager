@@ -14,6 +14,13 @@ class UserService {
     return UserRepository.findAll();
   }
 
+  async getUserDetails(id: string) {
+    const userDetails = await UserRepository.findById(id);
+    if (!userDetails) throw ApiError.badRequest("User not found");
+
+    return userDetails;
+  }
+
   async create(userData: UserRequest) {
     const error = validateUser(userData);
     if (error) throw ApiError.badRequest(error);
@@ -61,13 +68,6 @@ class UserService {
       email: user.email,
       token: token,
     };
-  }
-
-  async getUserDetails(id: string) {
-    const userDetails = await UserRepository.findById(id);
-    if (!userDetails) throw ApiError.badRequest("User not found");
-
-    return userDetails;
   }
 }
 

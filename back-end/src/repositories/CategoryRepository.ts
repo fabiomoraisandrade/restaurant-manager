@@ -3,19 +3,12 @@ import { CategoryRequest } from "../types/CategoryTypes";
 
 class UserRepository {
   async findAll() {
-    return prismaClient.user.findMany();
+    return prismaClient.category.findMany();
   }
 
   async findById(id: string) {
-    return prismaClient.user.findUnique({
+    return prismaClient.category.findUnique({
       where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        created_at: true,
-        updated_at: true,
-      },
     });
   }
 

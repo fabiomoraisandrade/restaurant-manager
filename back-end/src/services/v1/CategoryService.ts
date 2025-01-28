@@ -4,6 +4,10 @@ import { ApiError } from "../../errors/apiError";
 import CategoryRepository from "../../repositories/CategoryRepository";
 
 class CategoryService {
+  async findAll() {
+    return CategoryRepository.findAll();
+  }
+
   async create(categoryData: CategoryRequest) {
     const error = validateCategory(categoryData);
     if (error) throw ApiError.badRequest(error);
