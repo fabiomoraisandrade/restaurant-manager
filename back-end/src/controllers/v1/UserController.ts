@@ -9,9 +9,9 @@ class UserController {
     return res.status(StatusCodes.OK).json(users);
   }
 
-  async getUserDetails(req: Request, res: Response) {
+  async getUserById(req: Request, res: Response) {
     const { id } = req.params;
-    const userDetails = await UserService.getUserDetails(id);
+    const userDetails = await UserService.getUserById(id);
 
     return res.status(StatusCodes.OK).json(userDetails);
   }

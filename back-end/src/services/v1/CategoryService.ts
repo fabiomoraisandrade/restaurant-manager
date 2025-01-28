@@ -8,6 +8,13 @@ class CategoryService {
     return CategoryRepository.findAll();
   }
 
+  async getCategoryById(id: string) {
+    const categoryDetails = await CategoryRepository.findById(id);
+    if (!categoryDetails) throw ApiError.badRequest("Category not found");
+
+    return categoryDetails;
+  }
+
   async create(categoryData: CategoryRequest) {
     const error = validateCategory(categoryData);
     if (error) throw ApiError.badRequest(error);

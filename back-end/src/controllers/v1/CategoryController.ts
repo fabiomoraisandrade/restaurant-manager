@@ -9,6 +9,13 @@ class CategoryController {
     return res.status(StatusCodes.OK).json(categories);
   }
 
+  async getCategoryById(req: Request, res: Response) {
+    const { id } = req.params;
+    const categoryDetails = await CategoryService.getCategoryById(id);
+
+    return res.status(StatusCodes.OK).json(categoryDetails);
+  }
+
   async create(req: Request, res: Response) {
     const category = await CategoryService.create(req.body);
 

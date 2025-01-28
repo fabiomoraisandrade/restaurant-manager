@@ -14,7 +14,7 @@ class UserService {
     return UserRepository.findAll();
   }
 
-  async getUserDetails(id: string) {
+  async getUserById(id: string) {
     const userDetails = await UserRepository.findById(id);
     if (!userDetails) throw ApiError.badRequest("User not found");
 
