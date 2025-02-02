@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../errors/apiError";
 import ProductService from "../../services/v1/ProductService";
 
@@ -17,7 +18,7 @@ class ProductController {
       banner,
       category_id,
     });
-    return res.json(product);
+    return res.status(StatusCodes.CREATED).json(product);
   }
 }
 
