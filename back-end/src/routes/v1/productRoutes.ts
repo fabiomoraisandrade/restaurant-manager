@@ -7,8 +7,12 @@ import uploadConfig from "../../../infra/multer";
 const productRouter = Router();
 const upload = multer(uploadConfig.upload("./tmp"));
 
-// productRouter.get("/", new ProductController().findAll);
-// productRouter.get("/:id", authMiddleware, new ProductController().getUserById);
+productRouter.get("/", new ProductController().findAll);
+productRouter.get(
+  "/:id",
+  authMiddleware,
+  new ProductController().getProductById,
+);
 productRouter.post(
   "/",
   authMiddleware,

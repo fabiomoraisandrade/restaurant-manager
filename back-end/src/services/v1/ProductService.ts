@@ -4,6 +4,17 @@ import { ApiError } from "../../errors/apiError";
 import ProductRepository from "../../repositories/ProductRepository";
 
 class ProductService {
+  async findAll() {
+    return ProductRepository.findAll();
+  }
+
+  async getProductById(id: string) {
+    const productDetails = await ProductRepository.findById(id);
+    if (!productDetails) throw ApiError.badRequest("Product not found");
+
+    return productDetails;
+  }
+
   async create(productData: ProductRequest) {
     const error = validateProduct(productData);
     if (error) throw ApiError.badRequest(error);
