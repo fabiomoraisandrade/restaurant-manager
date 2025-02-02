@@ -15,6 +15,13 @@ class ProductService {
     return productDetails;
   }
 
+  async getProductsByCategoryId(categoryId: string) {
+    const products = await ProductRepository.findByCategoryId(categoryId);
+    if (!products) throw ApiError.badRequest("Products not found");
+
+    return products;
+  }
+
   async create(productData: ProductRequest) {
     const error = validateProduct(productData);
     if (error) throw ApiError.badRequest(error);

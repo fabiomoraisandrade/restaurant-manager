@@ -1,6 +1,6 @@
 import axios from "axios";
 
-describe("POST /api/v1/category", () => {
+describe("GET /api/v1/category", () => {
   const baseURL = "http://localhost:3333/api/v1/category";
   let authToken;
 

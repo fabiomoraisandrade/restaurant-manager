@@ -10,6 +10,13 @@ class ProductController {
     return res.status(StatusCodes.OK).json(products);
   }
 
+  async getProductsByCategoryId(req: Request, res: Response) {
+    const categoryId = req.query.category_id as string;
+    const products = await ProductService.getProductsByCategoryId(categoryId);
+
+    return res.status(StatusCodes.OK).json(products);
+  }
+
   async getProductById(req: Request, res: Response) {
     const { id } = req.params;
     const productDetails = await ProductService.getProductById(id);

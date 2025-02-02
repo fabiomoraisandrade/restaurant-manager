@@ -1,6 +1,6 @@
 import axios from "axios";
 
-describe("POST /api/v1/users", () => {
+describe("GET /api/v1/users", () => {
   const baseURL = "http://localhost:3333/api/v1/users";
   let authToken;
 

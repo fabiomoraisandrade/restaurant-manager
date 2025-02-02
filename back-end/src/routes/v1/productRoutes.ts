@@ -9,6 +9,11 @@ const upload = multer(uploadConfig.upload("./tmp"));
 
 productRouter.get("/", new ProductController().findAll);
 productRouter.get(
+  "/category",
+  authMiddleware,
+  new ProductController().getProductsByCategoryId,
+);
+productRouter.get(
   "/:id",
   authMiddleware,
   new ProductController().getProductById,

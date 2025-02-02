@@ -12,6 +12,12 @@ class ProductRepository {
     });
   }
 
+  async findByCategoryId(categoryId: string) {
+    return prismaClient.product.findMany({
+      where: { category_id: categoryId },
+    });
+  }
+
   async create({
     name,
     price,
