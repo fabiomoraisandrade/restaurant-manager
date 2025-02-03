@@ -20,6 +20,12 @@ class OrderController {
     const order = await OrderService.create(req.body);
     return res.status(StatusCodes.CREATED).json(order);
   }
+
+  async deleteOrder(req: Request, res: Response) {
+    const { id } = req.params;
+    await OrderService.deleteOrder(id);
+    return res.status(StatusCodes.NO_CONTENT).send();
+  }
 }
 
 export default OrderController;

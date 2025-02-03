@@ -15,7 +15,7 @@ describe("GET /api/v1/order", () => {
     authToken = response.data.token;
   });
 
-  test("deve retornar status 400 para order não encontrada", async () => {
+  test("deve retornar status 404 para order não encontrada", async () => {
     const response = await axios
       .get(`${baseURL}/id-que-nao-existe`, {
         headers: {
@@ -24,12 +24,12 @@ describe("GET /api/v1/order", () => {
       })
       .catch((err) => err.response);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
   });
 
   test("deve retornar status 200 para order retornada com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/f4ae7456-e5a3-4203-9074-0d17659a2fdd`, {
+      .get(`${baseURL}/c6c7d0fc-c330-47a9-b100-721658f19f58`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

@@ -10,14 +10,14 @@ class ProductService {
 
   async getProductById(id: string) {
     const productDetails = await ProductRepository.findById(id);
-    if (!productDetails) throw ApiError.badRequest("Product not found");
+    if (!productDetails) throw ApiError.notFound("Product not found");
 
     return productDetails;
   }
 
   async getProductsByCategoryId(categoryId: string) {
     const products = await ProductRepository.findByCategoryId(categoryId);
-    if (!products) throw ApiError.badRequest("Products not found");
+    if (!products) throw ApiError.notFound("Products not found");
 
     return products;
   }

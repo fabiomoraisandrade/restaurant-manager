@@ -20,6 +20,12 @@ class OrderRepository {
       },
     });
   }
+
+  async delete(id: string) {
+    return prismaClient.order.delete({
+      where: { id },
+    });
+  }
 }
 
 export default new OrderRepository();

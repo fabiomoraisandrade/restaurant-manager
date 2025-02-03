@@ -18,7 +18,7 @@ describe("GET /api/v1/product/category", () => {
   test("deve retornar status 200 para produto retornado com sucesso", async () => {
     const response = await axios
       .get(
-        `${baseURL}/category?category_id=e36b4656-cc7f-4bb8-9d0e-828d6fda4c14`,
+        `${baseURL}/category?category_id=caa4864c-aa54-4da7-9323-62cdf0fea628`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -32,7 +32,7 @@ describe("GET /api/v1/product/category", () => {
 });
 
 describe("GET /api/v1/product", () => {
-  test("deve retornar status 400 para produto não encontrado", async () => {
+  test("deve retornar status 404 para produto não encontrado", async () => {
     const response = await axios
       .get(`${baseURL}/id-que-nao-existe`, {
         headers: {
@@ -41,12 +41,12 @@ describe("GET /api/v1/product", () => {
       })
       .catch((err) => err.response);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
   });
 
   test("deve retornar status 200 para produto retornado com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/a231a8f9-07c8-4b40-a832-fe81e5ea3cb2`, {
+      .get(`${baseURL}/cd5bf143-026c-4320-821f-3077291d4ea7`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

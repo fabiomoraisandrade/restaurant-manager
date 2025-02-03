@@ -15,7 +15,7 @@ describe("GET /api/v1/users", () => {
     authToken = response.data.token;
   });
 
-  test("deve retornar status 400 para usuário não encontrado", async () => {
+  test("deve retornar status 404 para usuário não encontrado", async () => {
     const response = await axios
       .get(`${baseURL}/id-que-nao-existe`, {
         headers: {
@@ -24,12 +24,12 @@ describe("GET /api/v1/users", () => {
       })
       .catch((err) => err.response);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
   });
 
   test("deve retornar status 200 para usuário retornado com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/32461d61-abdf-4de2-bdf0-eaecea5040b8`, {
+      .get(`${baseURL}/16485db0-0fd0-4313-b247-1ee49b254b36`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

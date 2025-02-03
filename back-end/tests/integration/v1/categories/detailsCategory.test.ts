@@ -15,7 +15,7 @@ describe("GET /api/v1/category", () => {
     authToken = response.data.token;
   });
 
-  test("deve retornar status 400 para categoria não encontrada", async () => {
+  test("deve retornar status 404 para categoria não encontrada", async () => {
     const response = await axios
       .get(`${baseURL}/id-que-nao-existe`, {
         headers: {
@@ -24,12 +24,12 @@ describe("GET /api/v1/category", () => {
       })
       .catch((err) => err.response);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(404);
   });
 
   test("deve retornar status 200 para categoria retornada com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/e36b4656-cc7f-4bb8-9d0e-828d6fda4c14`, {
+      .get(`${baseURL}/7f7332d2-0789-4785-8567-8f73c895703a`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

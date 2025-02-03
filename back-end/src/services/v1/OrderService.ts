@@ -10,7 +10,7 @@ class OrderService {
 
   async getProductById(id: string) {
     const orderDetails = await OrderRepository.findById(id);
-    if (!orderDetails) throw ApiError.badRequest("Product not found");
+    if (!orderDetails) throw ApiError.notFound("Order not found");
 
     return orderDetails;
   }
@@ -20,6 +20,13 @@ class OrderService {
     if (error) throw ApiError.badRequest(error);
 
     const order = await OrderRepository.create(orderData);
+    return order;
+  }
+
+  async deleteOrder(id: string) {
+    const order = await OrderRepository.findById(id);
+    if (!order) throw ApiError.notFound("Order not found");
+    await OrderRepository.delete(id);
     return order;
   }
 }
