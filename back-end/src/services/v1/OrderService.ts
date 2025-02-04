@@ -39,10 +39,19 @@ class OrderService {
 
     const product = await ProductRepository.findById(orderItemData.product_id);
     if (!product) {
-      throw ApiError.badRequest("Produto não encontrado.");
+      throw ApiError.notFound("Product not found.");
     }
 
     const orderItem = await OrderItemRepository.create(orderItemData);
+    return orderItem;
+  }
+
+  async removeItemFromOrder(orderItem_id: string) {
+    const orderItem = await OrderItemRepository.findById(orderItem_id);
+    if (!orderItem) {
+      throw ApiError.notFound("OrderItem not found.");
+    }
+    await OrderItemRepository.delete(orderItem_id);
     return orderItem;
   }
 }

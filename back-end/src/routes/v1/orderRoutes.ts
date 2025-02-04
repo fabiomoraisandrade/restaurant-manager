@@ -13,5 +13,10 @@ orderRouter.post(
   authMiddleware,
   new OrderController().addItemToOrder,
 );
+orderRouter.delete(
+  "/orderItem/:id",
+  authMiddleware,
+  new OrderController().removeItemFromOrder,
+);
 
 export default orderRouter;

@@ -31,6 +31,12 @@ class OrderController {
     const orderItem = await OrderService.addItemToOrder(req.body);
     return res.status(StatusCodes.CREATED).json(orderItem);
   }
+
+  async removeItemFromOrder(req: Request, res: Response) {
+    const { id } = req.params;
+    await OrderService.removeItemFromOrder(id);
+    return res.status(StatusCodes.NO_CONTENT).send();
+  }
 }
 
 export default OrderController;
