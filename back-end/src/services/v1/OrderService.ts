@@ -1,7 +1,10 @@
-import { OrderRequest } from "./../../types/OrderTypes";
+import { OrderRequest, AddItemToOrder } from "./../../types/OrderTypes";
 import validateOrder from "../../validators/orderValidator";
+import validateOrderItem from "../../validators/orderItemValidator";
 import { ApiError } from "../../errors/apiError";
 import OrderRepository from "../../repositories/OrderRepository";
+import ProductRepository from "../../repositories/ProductRepository";
+import OrderItemRepository from "../../repositories/OrderItemRepository";
 
 class OrderService {
   async findAll() {
@@ -28,6 +31,19 @@ class OrderService {
     if (!order) throw ApiError.notFound("Order not found");
     await OrderRepository.delete(id);
     return order;
+  }
+
+  async addItemToOrder(orderItemData: AddItemToOrder) {
+    const error = validateOrderItem(orderItemData);
+    if (error) throw ApiError.badRequest(error);
+
+    const product = await ProductRepository.findById(orderItemData.product_id);
+    if (!product) {
+      throw ApiError.badRequest("Produto não encontrado.");
+    }
+
+    const orderItem = await OrderItemRepository.create(orderItemData);
+    return orderItem;
   }
 }
 

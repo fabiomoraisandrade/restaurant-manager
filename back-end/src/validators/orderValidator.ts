@@ -2,7 +2,7 @@ import joi from "joi";
 import { OrderRequest } from "../types/OrderTypes";
 
 const schema = joi.object().keys({
-  table: joi.number().empty(false).required(),
+  table: joi.number().strict().integer().min(1).required(),
   name: joi.string().empty(true),
 });
 

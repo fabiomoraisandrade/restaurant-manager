@@ -26,6 +26,11 @@ class OrderController {
     await OrderService.deleteOrder(id);
     return res.status(StatusCodes.NO_CONTENT).send();
   }
+
+  async addItemToOrder(req: Request, res: Response) {
+    const orderItem = await OrderService.addItemToOrder(req.body);
+    return res.status(StatusCodes.CREATED).json(orderItem);
+  }
 }
 
 export default OrderController;
