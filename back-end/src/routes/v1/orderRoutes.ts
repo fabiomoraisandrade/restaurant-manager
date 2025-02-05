@@ -18,5 +18,6 @@ orderRouter.delete(
   authMiddleware,
   new OrderController().removeItemFromOrder,
 );
+orderRouter.patch("/:id/send", authMiddleware, new OrderController().sendOrder);
 
 export default orderRouter;

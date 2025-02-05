@@ -26,6 +26,15 @@ class OrderRepository {
       where: { id },
     });
   }
+
+  async updateDraft(id: string) {
+    return prismaClient.order.update({
+      where: { id },
+      data: {
+        draft: false,
+      },
+    });
+  }
 }
 
 export default new OrderRepository();

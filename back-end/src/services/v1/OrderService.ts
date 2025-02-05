@@ -46,13 +46,19 @@ class OrderService {
     return orderItem;
   }
 
-  async removeItemFromOrder(orderItem_id: string) {
-    const orderItem = await OrderItemRepository.findById(orderItem_id);
+  async removeItemFromOrder(orderItemId: string) {
+    const orderItem = await OrderItemRepository.findById(orderItemId);
     if (!orderItem) {
       throw ApiError.notFound("OrderItem not found.");
     }
-    await OrderItemRepository.delete(orderItem_id);
+    await OrderItemRepository.delete(orderItemId);
     return orderItem;
+  }
+
+  async sendOrder(id: string) {
+    const order = await OrderRepository.findById(id);
+    if (!order) throw ApiError.notFound("Order not found");
+    return await OrderRepository.updateDraft(id);
   }
 }
 
