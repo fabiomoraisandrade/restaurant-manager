@@ -9,9 +9,15 @@ class OrderController {
     return res.status(StatusCodes.OK).json(orders);
   }
 
+  async findAllByStatusAndDraft(req: Request, res: Response) {
+    const orders = await OrderService.findAllByStatusAndDraft();
+
+    return res.status(StatusCodes.OK).json(orders);
+  }
+
   async getOrderById(req: Request, res: Response) {
     const { id } = req.params;
-    const orderDetails = await OrderService.getProductById(id);
+    const orderDetails = await OrderService.getOrderById(id);
 
     return res.status(StatusCodes.OK).json(orderDetails);
   }

@@ -6,6 +6,18 @@ class OrderRepository {
     return prismaClient.order.findMany();
   }
 
+  async findAllByStatusAndDraft() {
+    return prismaClient.order.findMany({
+      where: {
+        draft: false,
+        status: false,
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+  }
+
   async findById(id: string) {
     return prismaClient.order.findUnique({
       where: { id },

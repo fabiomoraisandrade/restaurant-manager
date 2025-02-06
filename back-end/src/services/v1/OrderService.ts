@@ -11,7 +11,11 @@ class OrderService {
     return OrderRepository.findAll();
   }
 
-  async getProductById(id: string) {
+  async findAllByStatusAndDraft() {
+    return OrderRepository.findAllByStatusAndDraft();
+  }
+
+  async getOrderById(id: string) {
     const orderDetails = await OrderRepository.findById(id);
     if (!orderDetails) throw ApiError.notFound("Order not found");
 
