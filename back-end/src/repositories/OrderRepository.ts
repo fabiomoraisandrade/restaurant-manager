@@ -47,6 +47,15 @@ class OrderRepository {
       },
     });
   }
+
+  async updateStatus(id: string) {
+    return prismaClient.order.update({
+      where: { id },
+      data: {
+        status: true,
+      },
+    });
+  }
 }
 
 export default new OrderRepository();

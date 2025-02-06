@@ -56,6 +56,12 @@ class OrderController {
     const updatedOrder = await OrderService.sendOrder(id);
     return res.status(StatusCodes.OK).json(updatedOrder);
   }
+
+  async finishOrder(req: Request, res: Response) {
+    const { id } = req.params;
+    const updatedOrder = await OrderService.finishOrder(id);
+    return res.status(StatusCodes.OK).json(updatedOrder);
+  }
 }
 
 export default OrderController;

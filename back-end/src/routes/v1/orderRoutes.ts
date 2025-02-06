@@ -29,5 +29,10 @@ orderRouter.delete(
   new OrderController().removeItemFromOrder,
 );
 orderRouter.patch("/:id/send", authMiddleware, new OrderController().sendOrder);
+orderRouter.patch(
+  "/:id/finish",
+  authMiddleware,
+  new OrderController().finishOrder,
+);
 
 export default orderRouter;

@@ -68,6 +68,12 @@ class OrderService {
     if (!order) throw ApiError.notFound("Order not found");
     return await OrderRepository.updateDraft(id);
   }
+
+  async finishOrder(id: string) {
+    const order = await OrderRepository.findById(id);
+    if (!order) throw ApiError.notFound("Order not found");
+    return await OrderRepository.updateStatus(id);
+  }
 }
 
 export default new OrderService();
