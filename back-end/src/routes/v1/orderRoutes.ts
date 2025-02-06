@@ -11,6 +11,11 @@ orderRouter.get(
   new OrderController().findAllByStatusAndDraft,
 );
 orderRouter.get("/:id", authMiddleware, new OrderController().getOrderById);
+orderRouter.get(
+  "/orderItem/:id",
+  authMiddleware,
+  new OrderController().getOrderItemsByOrderId,
+);
 orderRouter.post("/", authMiddleware, new OrderController().create);
 orderRouter.delete("/:id", authMiddleware, new OrderController().deleteOrder);
 orderRouter.post(

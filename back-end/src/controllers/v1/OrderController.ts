@@ -22,6 +22,13 @@ class OrderController {
     return res.status(StatusCodes.OK).json(orderDetails);
   }
 
+  async getOrderItemsByOrderId(req: Request, res: Response) {
+    const { orderItemId } = req.params;
+    const orderItems = await OrderService.getOrderItemsByOrderId(orderItemId);
+
+    return res.status(StatusCodes.OK).json(orderItems);
+  }
+
   async create(req: Request, res: Response) {
     const order = await OrderService.create(req.body);
     return res.status(StatusCodes.CREATED).json(order);

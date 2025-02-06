@@ -22,6 +22,10 @@ class OrderService {
     return orderDetails;
   }
 
+  async getOrderItemsByOrderId(orderId: string) {
+    return OrderItemRepository.findByOrderId(orderId);
+  }
+
   async create(orderData: OrderRequest) {
     const error = validateOrder(orderData);
     if (error) throw ApiError.badRequest(error);

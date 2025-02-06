@@ -12,6 +12,16 @@ class OrderItemRepository {
     });
   }
 
+  async findByOrderId(id: string) {
+    return prismaClient.orderItem.findMany({
+      where: { order_id: id },
+      include: {
+        product: true,
+        order: true
+      }
+    });
+  }
+
   async create({ order_id, product_id, amount }: AddItemToOrder) {
     return prismaClient.orderItem.create({
       data: {
