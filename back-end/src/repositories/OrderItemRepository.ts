@@ -1,5 +1,5 @@
 import prismaClient from "../prisma";
-import { AddItemToOrder } from "../types/OrderTypes";
+import { OrderItemRequest } from "../types/OrderItemTypes";
 
 class OrderItemRepository {
   async findAll() {
@@ -17,12 +17,12 @@ class OrderItemRepository {
       where: { order_id: id },
       include: {
         product: true,
-        order: true
-      }
+        order: true,
+      },
     });
   }
 
-  async create({ order_id, product_id, amount }: AddItemToOrder) {
+  async create({ order_id, product_id, amount }: OrderItemRequest) {
     return prismaClient.orderItem.create({
       data: {
         order_id,

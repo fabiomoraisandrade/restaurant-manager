@@ -1,5 +1,5 @@
 import joi from "joi";
-import { AddItemToOrder } from "../types/OrderTypes";
+import { OrderItemRequest } from "../types/OrderItemTypes";
 
 const schema = joi.object().keys({
   order_id: joi.string().empty(false).required(),
@@ -7,7 +7,7 @@ const schema = joi.object().keys({
   amount: joi.number().strict().integer().min(1).required(),
 });
 
-const validateOrderItem = (orderItem: AddItemToOrder) => {
+const validateOrderItem = (orderItem: OrderItemRequest) => {
   const { error } = schema.validate(orderItem);
 
   if (error) {

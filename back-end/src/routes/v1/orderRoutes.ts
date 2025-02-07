@@ -11,23 +11,8 @@ orderRouter.get(
   new OrderController().findAllByStatusAndDraft,
 );
 orderRouter.get("/:id", authMiddleware, new OrderController().getOrderById);
-orderRouter.get(
-  "/orderItem/:id",
-  authMiddleware,
-  new OrderController().getOrderItemsByOrderId,
-);
 orderRouter.post("/", authMiddleware, new OrderController().create);
-orderRouter.delete("/:id", authMiddleware, new OrderController().deleteOrder);
-orderRouter.post(
-  "/orderItem",
-  authMiddleware,
-  new OrderController().addItemToOrder,
-);
-orderRouter.delete(
-  "/orderItem/:id",
-  authMiddleware,
-  new OrderController().removeItemFromOrder,
-);
+orderRouter.delete("/:id", authMiddleware, new OrderController().delete);
 orderRouter.patch("/:id/send", authMiddleware, new OrderController().sendOrder);
 orderRouter.patch(
   "/:id/finish",

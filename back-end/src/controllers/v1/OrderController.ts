@@ -22,44 +22,30 @@ class OrderController {
     return res.status(StatusCodes.OK).json(orderDetails);
   }
 
-  async getOrderItemsByOrderId(req: Request, res: Response) {
-    const { orderItemId } = req.params;
-    const orderItems = await OrderService.getOrderItemsByOrderId(orderItemId);
-
-    return res.status(StatusCodes.OK).json(orderItems);
-  }
-
   async create(req: Request, res: Response) {
     const order = await OrderService.create(req.body);
+
     return res.status(StatusCodes.CREATED).json(order);
   }
 
-  async deleteOrder(req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params;
     await OrderService.deleteOrder(id);
-    return res.status(StatusCodes.NO_CONTENT).send();
-  }
 
-  async addItemToOrder(req: Request, res: Response) {
-    const orderItem = await OrderService.addItemToOrder(req.body);
-    return res.status(StatusCodes.CREATED).json(orderItem);
-  }
-
-  async removeItemFromOrder(req: Request, res: Response) {
-    const { id } = req.params;
-    await OrderService.removeItemFromOrder(id);
     return res.status(StatusCodes.NO_CONTENT).send();
   }
 
   async sendOrder(req: Request, res: Response) {
     const { id } = req.params;
     const updatedOrder = await OrderService.sendOrder(id);
+
     return res.status(StatusCodes.OK).json(updatedOrder);
   }
 
   async finishOrder(req: Request, res: Response) {
     const { id } = req.params;
     const updatedOrder = await OrderService.finishOrder(id);
+
     return res.status(StatusCodes.OK).json(updatedOrder);
   }
 }
