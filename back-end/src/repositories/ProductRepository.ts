@@ -35,6 +35,12 @@ class ProductRepository {
       },
     });
   }
+
+  async delete(id: string) {
+    return prismaClient.product.delete({
+      where: { id },
+    });
+  }
 }
 
 export default new ProductRepository();

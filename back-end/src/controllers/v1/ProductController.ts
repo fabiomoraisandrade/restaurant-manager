@@ -29,6 +29,10 @@ class ProductController {
       throw ApiError.badRequest("file is required");
     }
 
+    if (!req.body.price) {
+      throw ApiError.badRequest("price is required");
+    }
+
     const { name, price, description, category_id } = req.body;
     const priceNumber = parseFloat(price.replace(",", "."));
     const validatedPrice = Number(priceNumber.toFixed(2));
@@ -41,6 +45,13 @@ class ProductController {
       category_id,
     });
     return res.status(StatusCodes.CREATED).json(product);
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    await ProductService.delete(id);
+
+    return res.status(StatusCodes.NO_CONTENT).end();
   }
 }
 

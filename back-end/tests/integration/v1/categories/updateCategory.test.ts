@@ -1,6 +1,6 @@
 import axios from "axios";
 
-describe("DELETE /api/v1/category", () => {
+describe("PUT/PATCH /api/v1/category", () => {
   const baseURL = "http://localhost:3333/api/v1/category";
   let authToken;
   let createdCategory;
@@ -39,15 +39,6 @@ describe("DELETE /api/v1/category", () => {
 
   afterAll(async () => {
     try {
-      const loginURL = "http://localhost:3333/api/v1/login";
-      const credentials = {
-        email: "email1@teste.com",
-        password: "123456",
-      };
-
-      const response = await axios.post(loginURL, credentials);
-      authToken = response.data.token;
-
       await axios.delete(`${baseURL}/${createdCategory.data.id}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,

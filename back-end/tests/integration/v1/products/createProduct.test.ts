@@ -1,36 +1,61 @@
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
-import prismaClient from "../../../../src/prisma";
-
-// Limpeza do banco de dados antes de cada teste
-beforeEach(async () => {
-  await prismaClient.$transaction([prismaClient.product.deleteMany()]);
-});
-
-// Limpeza extra após cada teste (opcional)
-afterEach(async () => {
-  await prismaClient.$transaction([prismaClient.product.deleteMany()]);
-});
-
-// Fecha a conexão com o Prisma após todos os testes
-afterAll(async () => {
-  await prismaClient.$disconnect();
-});
 
 describe("POST /api/v1/product", () => {
   const baseURL = "http://localhost:3333/api/v1/product";
+  const categoryBaseURL = "http://localhost:3333/api/v1/category";
   let authToken;
+  let createdCategory;
+  let createdProduct;
 
   beforeAll(async () => {
-    const loginURL = "http://localhost:3333/api/v1/login";
-    const credentials = {
-      email: "email1@teste.com",
-      password: "123456",
-    };
+    try {
+      const loginURL = "http://localhost:3333/api/v1/login";
+      const credentials = {
+        email: "email1@teste.com",
+        password: "123456",
+      };
 
-    const response = await axios.post(loginURL, credentials);
-    authToken = response.data.token;
+      const response = await axios.post(loginURL, credentials);
+      authToken = response.data.token;
+
+      createdCategory = await axios.post(
+        categoryBaseURL,
+        {
+          name: "Categoria Teste",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
+    } catch (e) {
+      console.error(
+        `Erro ao criar categoria para testar criar o produto: ${e.message}`,
+      );
+    }
+  });
+
+  afterAll(async () => {
+    try {
+      await axios.delete(`${baseURL}/${createdProduct.data.id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      await axios.delete(`${categoryBaseURL}/${createdCategory.data.id}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+    } catch (e) {
+      console.error(
+        `Erro ao deletar categoria/produto criados para testar criar o produto: ${e.message}`,
+      );
+    }
   });
 
   test("deve retornar status 400 se o file não for enviado", async () => {
@@ -38,7 +63,7 @@ describe("POST /api/v1/product", () => {
     formData.append("name", "Produto Teste");
     formData.append("price", "100");
     formData.append("description", "Descrição Produto Teste");
-    formData.append("category_id", "e36b4656-cc7f-4bb8-9d0e-828d6fda4c14");
+    formData.append("category_id", createdCategory.data.id);
 
     const response = await axios
       .post("http://localhost:3333/api/v1/product", formData, {
@@ -57,7 +82,7 @@ describe("POST /api/v1/product", () => {
     formData.append("price", "100");
     formData.append("description", "Descrição Produto Teste");
     formData.append("file", fs.createReadStream("tmp/test-image.jpg"));
-    formData.append("category_id", "e36b4656-cc7f-4bb8-9d0e-828d6fda4c14");
+    formData.append("category_id", createdCategory.data.id);
 
     const response = await axios
       .post("http://localhost:3333/api/v1/product", formData, {
@@ -76,7 +101,7 @@ describe("POST /api/v1/product", () => {
     formData.append("name", "Produto Teste");
     formData.append("description", "Descrição Produto Teste");
     formData.append("file", fs.createReadStream("tmp/test-image.jpg"));
-    formData.append("category_id", "e36b4656-cc7f-4bb8-9d0e-828d6fda4c14");
+    formData.append("category_id", createdCategory.data.id);
 
     const response = await axios
       .post("http://localhost:3333/api/v1/product", formData, {
@@ -95,7 +120,7 @@ describe("POST /api/v1/product", () => {
     formData.append("name", "Produto Teste");
     formData.append("price", "100");
     formData.append("file", fs.createReadStream("tmp/test-image.jpg"));
-    formData.append("category_id", "e36b4656-cc7f-4bb8-9d0e-828d6fda4c14");
+    formData.append("category_id", createdCategory.data.id);
 
     const response = await axios
       .post("http://localhost:3333/api/v1/product", formData, {
@@ -134,9 +159,9 @@ describe("POST /api/v1/product", () => {
     formData.append("price", "100");
     formData.append("description", "Descrição Produto Teste");
     formData.append("file", fs.createReadStream("tmp/test-image.jpg"));
-    formData.append("category_id", "e36b4656-cc7f-4bb8-9d0e-828d6fda4c14");
+    formData.append("category_id", createdCategory.data.id);
 
-    const response = await axios
+    createdProduct = await axios
       .post("http://localhost:3333/api/v1/product", formData, {
         headers: {
           ...formData.getHeaders(),
@@ -145,6 +170,6 @@ describe("POST /api/v1/product", () => {
       })
       .catch((err) => err.response);
 
-    expect(response.status).toBe(201);
+    expect(createdProduct.status).toBe(201);
   });
 });

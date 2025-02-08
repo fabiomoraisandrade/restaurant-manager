@@ -37,6 +37,13 @@ class ProductService {
     const product = await ProductRepository.create(cleanedData);
     return product;
   }
+
+  async delete(id: string) {
+    const product = await ProductRepository.findById(id);
+    if (!product) throw ApiError.notFound("Product not found");
+    await ProductRepository.delete(id);
+    return product;
+  }
 }
 
 export default new ProductService();
