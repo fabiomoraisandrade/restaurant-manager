@@ -58,7 +58,7 @@ model Order {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  items OrderItem[]
+  orderItems OrderItem[]
 }
 
 model OrderItem {
