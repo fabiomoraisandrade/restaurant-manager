@@ -29,7 +29,7 @@ describe("GET /api/v1/category", () => {
 
   test("deve retornar status 200 para categoria retornada com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/7f7332d2-0789-4785-8567-8f73c895703a`, {
+      .get(`${baseURL}/b78f3dcc-fae7-4f5e-bc28-3059c67f4cc0`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

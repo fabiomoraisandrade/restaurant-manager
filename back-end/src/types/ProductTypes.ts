@@ -1,6 +1,6 @@
 export interface ProductRequest {
   name: string;
-  price: string;
+  price: number;
   description: string;
   banner: string;
   category_id: string;

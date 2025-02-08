@@ -18,7 +18,7 @@ describe("GET /api/v1/product/category", () => {
   test("deve retornar status 200 para produto retornado com sucesso", async () => {
     const response = await axios
       .get(
-        `${baseURL}/category?category_id=caa4864c-aa54-4da7-9323-62cdf0fea628`,
+        `${baseURL}/category?category_id=b78f3dcc-fae7-4f5e-bc28-3059c67f4cc0`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -46,7 +46,7 @@ describe("GET /api/v1/product", () => {
 
   test("deve retornar status 200 para produto retornado com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/cd5bf143-026c-4320-821f-3077291d4ea7`, {
+      .get(`${baseURL}/1ddc9a6e-3ae5-44c4-bca0-ca2918fbc8fe`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

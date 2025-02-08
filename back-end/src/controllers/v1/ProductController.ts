@@ -30,10 +30,12 @@ class ProductController {
     }
 
     const { name, price, description, category_id } = req.body;
+    const priceNumber = parseFloat(price.replace(",", "."));
+    const validatedPrice = Number(priceNumber.toFixed(2));
     const { filename: banner } = req.file;
     const product = await ProductService.create({
       name,
-      price,
+      price: validatedPrice,
       description,
       banner,
       category_id,

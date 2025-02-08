@@ -28,9 +28,7 @@ class ProductService {
 
     const cleanedData: ProductRequest = {
       name: productData.name.trim(),
-      price: parseFloat(
-        productData.price.replace(/[^\d,.-]/g, "").replace(",", "."),
-      ).toString(),
+      price: productData.price,
       description: productData.description.trim(),
       banner: productData.banner.trim(),
       category_id: productData.category_id.trim(),

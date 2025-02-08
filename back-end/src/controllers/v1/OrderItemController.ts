@@ -18,7 +18,6 @@ class OrderItemController {
 
   async getOrderItemsByOrderId(req: Request, res: Response) {
     const { orderId } = req.params;
-    console.log(`orderId: ${orderId}`);
     const orderItems = await OrderItemService.getOrderItemsByOrderId(orderId);
 
     return res.status(StatusCodes.OK).json(orderItems);

@@ -29,7 +29,7 @@ describe("GET /api/v1/order", () => {
 
   test("deve retornar status 200 para order retornada com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/c6c7d0fc-c330-47a9-b100-721658f19f58`, {
+      .get(`${baseURL}/76b20b8a-3601-4bde-95e8-9b983479e72b`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

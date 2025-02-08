@@ -37,7 +37,7 @@ model Product {
   @@map("products")
   id String @id @default(uuid())
   name String
-  price String
+  price Decimal @db.Decimal(10,2)
   description String
   banner String
   created_at DateTime? @default(now())

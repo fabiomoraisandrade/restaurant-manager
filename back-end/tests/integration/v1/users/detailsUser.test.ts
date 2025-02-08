@@ -29,7 +29,7 @@ describe("GET /api/v1/users", () => {
 
   test("deve retornar status 200 para usuário retornado com sucesso", async () => {
     const response = await axios
-      .get(`${baseURL}/16485db0-0fd0-4313-b247-1ee49b254b36`, {
+      .get(`${baseURL}/4b2d9ce6-3883-44d6-a12f-688c8bab4c26`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
