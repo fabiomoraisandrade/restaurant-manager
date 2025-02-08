@@ -11,5 +11,12 @@ categoryRouter.get(
   new CategoryController().getCategoryById,
 );
 categoryRouter.post("/", authMiddleware, new CategoryController().create);
+categoryRouter.delete("/:id", authMiddleware, new CategoryController().delete);
+categoryRouter.put("/:id", authMiddleware, new CategoryController().update);
+categoryRouter.patch(
+  "/:id",
+  authMiddleware,
+  new CategoryController().partialUpdate,
+);
 
 export default categoryRouter;

@@ -32,7 +32,7 @@ class OrderController {
     const { id } = req.params;
     await OrderService.deleteOrder(id);
 
-    return res.status(StatusCodes.NO_CONTENT).send();
+    return res.status(StatusCodes.NO_CONTENT).end();
   }
 
   async sendOrder(req: Request, res: Response) {

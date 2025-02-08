@@ -33,7 +33,7 @@ class OrderItemController {
     const { id } = req.params;
     await OrderItemService.delete(id);
 
-    return res.status(StatusCodes.NO_CONTENT).send();
+    return res.status(StatusCodes.NO_CONTENT).end();
   }
 }
 

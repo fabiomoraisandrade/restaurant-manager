@@ -19,6 +19,26 @@ class UserRepository {
       },
     });
   }
+
+  async delete(id: string) {
+    return prismaClient.category.delete({
+      where: { id },
+    });
+  }
+
+  async update(id: string, data: CategoryRequest) {
+    return prismaClient.category.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async partialUpdate(id: string, data: CategoryRequest) {
+    return prismaClient.category.update({
+      where: { id },
+      data,
+    });
+  }
 }
 
 export default new UserRepository();
