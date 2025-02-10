@@ -41,6 +41,26 @@ class ProductRepository {
       where: { id },
     });
   }
+
+  async update(id: string, data: ProductRequest) {
+    return prismaClient.product.update({
+      where: { id },
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
+    });
+  }
+
+  async partialUpdate(id: string, data: ProductRequest) {
+    return prismaClient.product.update({
+      where: { id },
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
+    });
+  }
 }
 
 export default new ProductRepository();

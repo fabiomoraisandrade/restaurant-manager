@@ -25,5 +25,17 @@ productRouter.post(
   new ProductController().create,
 );
 productRouter.delete("/:id", authMiddleware, new ProductController().delete);
+productRouter.put(
+  "/:id",
+  authMiddleware,
+  upload.single("file"),
+  new ProductController().update,
+);
+productRouter.patch(
+  "/:id",
+  authMiddleware,
+  upload.single("file"),
+  new ProductController().partialUpdate,
+);
 
 export default productRouter;

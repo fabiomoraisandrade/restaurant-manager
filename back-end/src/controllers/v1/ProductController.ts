@@ -44,6 +44,7 @@ class ProductController {
       banner,
       category_id,
     });
+
     return res.status(StatusCodes.CREATED).json(product);
   }
 
@@ -52,6 +53,56 @@ class ProductController {
     await ProductService.delete(id);
 
     return res.status(StatusCodes.NO_CONTENT).end();
+  }
+
+  async update(req: Request, res: Response) {
+    if (!req.file) {
+      throw ApiError.badRequest("file is required");
+    }
+
+    if (!req.body.price) {
+      throw ApiError.badRequest("price is required");
+    }
+
+    const { id } = req.params;
+    const { name, price, description, category_id } = req.body;
+    const priceNumber = parseFloat(price.replace(",", "."));
+    const validatedPrice = Number(priceNumber.toFixed(2));
+    const { filename: banner } = req.file;
+    const updatedProduct = await ProductService.update(id, {
+      name,
+      price: validatedPrice,
+      description,
+      banner,
+      category_id,
+    });
+
+    return res.status(StatusCodes.OK).json(updatedProduct);
+  }
+
+  async partialUpdate(req: Request, res: Response) {
+    const { id } = req.params;
+    const { name, price, description, category_id } = req.body;
+    let validatedPrice;
+    let banner;
+    if (price) {
+      const priceNumber = parseFloat(price.replace(",", "."));
+      validatedPrice = Number(priceNumber.toFixed(2));
+    }
+
+    if (req.file) {
+      banner = req.file.filename;
+    }
+
+    const updatedProduct = await ProductService.partialUpdate(id, {
+      name,
+      price: validatedPrice,
+      description,
+      banner,
+      category_id,
+    });
+
+    return res.status(StatusCodes.OK).json(updatedProduct);
   }
 }
 

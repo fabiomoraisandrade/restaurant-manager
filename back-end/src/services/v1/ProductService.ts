@@ -1,7 +1,11 @@
 import { ProductRequest } from "./../../types/ProductTypes";
-import validateProduct from "../../validators/productValidator";
+import {
+  validateProduct,
+  validatePartialProduct,
+} from "../../validators/productValidator";
 import { ApiError } from "../../errors/apiError";
 import ProductRepository from "../../repositories/ProductRepository";
+import CategoryRepository from "../../repositories/CategoryRepository";
 
 class ProductService {
   async findAll() {
@@ -26,12 +30,15 @@ class ProductService {
     const error = validateProduct(productData);
     if (error) throw ApiError.badRequest(error);
 
+    const category = await CategoryRepository.findById(productData.category_id);
+    if (!category) throw ApiError.notFound("Category not found");
+
     const cleanedData: ProductRequest = {
       name: productData.name.trim(),
       price: productData.price,
       description: productData.description.trim(),
       banner: productData.banner.trim(),
-      category_id: productData.category_id.trim(),
+      category_id: productData.category_id,
     };
 
     const product = await ProductRepository.create(cleanedData);
@@ -43,6 +50,38 @@ class ProductService {
     if (!product) throw ApiError.notFound("Product not found");
     await ProductRepository.delete(id);
     return product;
+  }
+
+  async update(id: string, productData: ProductRequest) {
+    const error = validateProduct(productData);
+    if (error) throw ApiError.badRequest(error);
+
+    const product = await ProductRepository.findById(id);
+    if (!product) throw ApiError.notFound("Product not found");
+
+    const category = await CategoryRepository.findById(
+      productData.category_id.trim(),
+    );
+    if (!category) throw ApiError.notFound("Category not found");
+
+    return ProductRepository.update(id, productData);
+  }
+
+  async partialUpdate(id: string, productData: ProductRequest) {
+    const error = validatePartialProduct(productData);
+    if (error) throw ApiError.badRequest(error);
+
+    const product = await ProductRepository.findById(id);
+    if (!product) throw ApiError.notFound("Product not found");
+
+    if (productData.category_id) {
+      const category = await CategoryRepository.findById(
+        productData.category_id,
+      );
+      if (!category) throw ApiError.notFound("Category not found");
+    }
+
+    return ProductRepository.partialUpdate(id, productData);
   }
 }
 

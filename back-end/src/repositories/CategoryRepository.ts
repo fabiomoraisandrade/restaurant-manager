@@ -29,14 +29,20 @@ class UserRepository {
   async update(id: string, data: CategoryRequest) {
     return prismaClient.category.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
     });
   }
 
   async partialUpdate(id: string, data: CategoryRequest) {
     return prismaClient.category.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
     });
   }
 }

@@ -66,7 +66,7 @@ describe("POST /api/v1/product", () => {
     formData.append("category_id", createdCategory.data.id);
 
     const response = await axios
-      .post("http://localhost:3333/api/v1/product", formData, {
+      .post(`${baseURL}`, formData, {
         headers: {
           ...formData.getHeaders(),
           Authorization: `Bearer ${authToken}`,
@@ -151,6 +151,25 @@ describe("POST /api/v1/product", () => {
       .catch((err) => err.response);
     expect(response.status).toBe(400);
     expect(response.data).toHaveProperty("message", "category_id is required");
+  });
+
+  test("deve retornar status 404 se a categoria não for encontrada", async () => {
+    const formData = new FormData();
+    formData.append("name", "Produto Teste");
+    formData.append("price", "100");
+    formData.append("description", "Descrição Produto Teste");
+    formData.append("file", fs.createReadStream("tmp/test-image.jpg"));
+    formData.append("category_id", "id-que-não-existe");
+
+    const response = await axios
+      .post("http://localhost:3333/api/v1/product", formData, {
+        headers: {
+          ...formData.getHeaders(),
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .catch((err) => err.response);
+    expect(response.status).toBe(404);
   });
 
   test("deve criar um produto com sucesso", async () => {
