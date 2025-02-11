@@ -13,6 +13,8 @@ orderRouter.get(
 orderRouter.get("/:id", authMiddleware, new OrderController().getOrderById);
 orderRouter.post("/", authMiddleware, new OrderController().create);
 orderRouter.delete("/:id", authMiddleware, new OrderController().delete);
+orderRouter.put("/:id", authMiddleware, new OrderController().update);
+orderRouter.patch("/:id", authMiddleware, new OrderController().partialUpdate);
 orderRouter.patch("/:id/send", authMiddleware, new OrderController().sendOrder);
 orderRouter.patch(
   "/:id/finish",

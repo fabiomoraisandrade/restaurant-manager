@@ -35,16 +35,6 @@ class UserRepository {
       },
     });
   }
-
-  async partialUpdate(id: string, data: CategoryRequest) {
-    return prismaClient.category.update({
-      where: { id },
-      data: {
-        ...data,
-        updated_at: new Date(),
-      },
-    });
-  }
 }
 
 export default new UserRepository();

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let authToken;
+let authToken: string;
 const baseURL = "http://localhost:3333/api/v1/product";
 
 beforeAll(async () => {

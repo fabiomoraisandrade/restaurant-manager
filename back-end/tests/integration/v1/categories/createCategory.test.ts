@@ -1,26 +1,11 @@
 import axios from "axios";
-import prismaClient from "../../../../src/prisma";
 
-// Limpeza do banco de dados antes de cada teste
-beforeEach(async () => {
-  await prismaClient.$transaction([prismaClient.category.deleteMany()]);
-});
+const baseURL = "http://localhost:3333/api/v1/category";
+let authToken: string;
+let createdCategory: any;
 
-// Limpeza extra após cada teste (opcional)
-afterEach(async () => {
-  await prismaClient.$transaction([prismaClient.category.deleteMany()]);
-});
-
-// Fecha a conexão com o Prisma após todos os testes
-afterAll(async () => {
-  await prismaClient.$disconnect();
-});
-
-describe("POST /api/v1/category", () => {
-  const baseURL = "http://localhost:3333/api/v1/category";
-  let authToken;
-
-  beforeAll(async () => {
+beforeAll(async () => {
+  try {
     const loginURL = "http://localhost:3333/api/v1/login";
     const credentials = {
       email: "email1@teste.com",
@@ -29,26 +14,40 @@ describe("POST /api/v1/category", () => {
 
     const response = await axios.post(loginURL, credentials);
     authToken = response.data.token;
-  });
+  } catch (e) {
+    console.error(`Erro ao fazer login: ${e.message}`);
+  }
+});
 
+afterAll(async () => {
+  try {
+    await axios.delete(`${baseURL}/${createdCategory.data.id}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+  } catch (e) {
+    console.error(
+      `Erro ao deletar order criada ao final do teste: ${e.message}`,
+    );
+  }
+});
+
+describe("POST /api/v1/category", () => {
   test("deve retornar status 400 se o nome não for enviado", async () => {
     const response = await axios
-      .post(
-        baseURL,
-        null, // Sem corpo na requisição
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+      .post(baseURL, null, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
         },
-      )
+      })
       .catch((err) => err.response);
     expect(response.status).toBe(400);
     expect(response.data).toHaveProperty("message", "name is required");
   });
 
   test("deve criar uma categoria com sucesso", async () => {
-    const response = await axios
+    createdCategory = await axios
       .post(
         baseURL,
         {
@@ -62,11 +61,8 @@ describe("POST /api/v1/category", () => {
       )
       .catch((err) => err.response);
 
-    // Verifica se o status é 201 (criado com sucesso)
-    expect(response.status).toBe(201);
-
-    // Verifica se as propriedades da categoria criada estão presentes na resposta
-    expect(response.data).toHaveProperty("id");
-    expect(response.data).toHaveProperty("name", "Categoria Teste");
+    expect(createdCategory.status).toBe(201);
+    expect(createdCategory.data).toHaveProperty("id");
+    expect(createdCategory.data).toHaveProperty("name", "Categoria Teste");
   });
 });

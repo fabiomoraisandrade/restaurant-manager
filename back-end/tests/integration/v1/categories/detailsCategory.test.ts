@@ -1,20 +1,20 @@
 import axios from "axios";
 
+const baseURL = "http://localhost:3333/api/v1/category";
+let authToken: string;
+
+beforeAll(async () => {
+  const loginURL = "http://localhost:3333/api/v1/login";
+  const credentials = {
+    email: "email1@teste.com",
+    password: "123456",
+  };
+
+  const response = await axios.post(loginURL, credentials);
+  authToken = response.data.token;
+});
+
 describe("GET /api/v1/category", () => {
-  const baseURL = "http://localhost:3333/api/v1/category";
-  let authToken;
-
-  beforeAll(async () => {
-    const loginURL = "http://localhost:3333/api/v1/login";
-    const credentials = {
-      email: "email1@teste.com",
-      password: "123456",
-    };
-
-    const response = await axios.post(loginURL, credentials);
-    authToken = response.data.token;
-  });
-
   test("deve retornar status 404 para categoria não encontrada", async () => {
     const response = await axios
       .get(`${baseURL}/id-que-nao-existe`, {

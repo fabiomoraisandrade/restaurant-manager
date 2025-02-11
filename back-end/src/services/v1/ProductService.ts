@@ -53,11 +53,11 @@ class ProductService {
   }
 
   async update(id: string, productData: ProductRequest) {
-    const error = validateProduct(productData);
-    if (error) throw ApiError.badRequest(error);
-
     const product = await ProductRepository.findById(id);
     if (!product) throw ApiError.notFound("Product not found");
+
+    const error = validateProduct(productData);
+    if (error) throw ApiError.badRequest(error);
 
     const category = await CategoryRepository.findById(
       productData.category_id.trim(),
@@ -68,11 +68,11 @@ class ProductService {
   }
 
   async partialUpdate(id: string, productData: ProductRequest) {
-    const error = validatePartialProduct(productData);
-    if (error) throw ApiError.badRequest(error);
-
     const product = await ProductRepository.findById(id);
     if (!product) throw ApiError.notFound("Product not found");
+
+    const error = validatePartialProduct(productData);
+    if (error) throw ApiError.badRequest(error);
 
     if (productData.category_id) {
       const category = await CategoryRepository.findById(
@@ -81,7 +81,7 @@ class ProductService {
       if (!category) throw ApiError.notFound("Category not found");
     }
 
-    return ProductRepository.partialUpdate(id, productData);
+    return ProductRepository.update(id, productData);
   }
 }
 

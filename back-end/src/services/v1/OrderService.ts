@@ -1,5 +1,9 @@
-import { OrderRequest } from "./../../types/OrderTypes";
-import validateOrder from "../../validators/orderValidator";
+import { OrderRequest, OrderUpdate } from "./../../types/OrderTypes";
+import {
+  validateOrder,
+  validateUpdateOrder,
+  validatePartialOrder,
+} from "../../validators/orderValidator";
 import { ApiError } from "../../errors/apiError";
 import OrderRepository from "../../repositories/OrderRepository";
 
@@ -33,6 +37,28 @@ class OrderService {
 
     await OrderRepository.delete(id);
     return order;
+  }
+
+  async update(id: string, orderData: OrderUpdate) {
+    const order = await OrderRepository.findById(id);
+    if (!order) throw ApiError.notFound("Order not found");
+
+    const error = validateUpdateOrder(orderData);
+    if (error) throw ApiError.badRequest(error);
+
+    const updatedOrder = await OrderRepository.update(id, orderData);
+    return updatedOrder;
+  }
+
+  async partialUpdate(id: string, orderData: OrderUpdate) {
+    const order = await OrderRepository.findById(id);
+    if (!order) throw ApiError.notFound("Order not found");
+
+    const error = validatePartialOrder(orderData);
+    if (error) throw ApiError.badRequest(error);
+
+    const updatedOrder = await OrderRepository.update(id, orderData);
+    return updatedOrder;
   }
 
   async sendOrder(id: string) {

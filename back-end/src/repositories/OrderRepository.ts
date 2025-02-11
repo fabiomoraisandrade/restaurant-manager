@@ -39,6 +39,16 @@ class OrderRepository {
     });
   }
 
+  async update(id: string, data: OrderRequest) {
+    return prismaClient.order.update({
+      where: { id },
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
+    });
+  }
+
   async updateDraft(id: string) {
     return prismaClient.order.update({
       where: { id },

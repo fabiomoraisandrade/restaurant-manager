@@ -33,23 +33,23 @@ class CategoryService {
   }
 
   async update(id: string, categoryData: CategoryRequest) {
-    const error = validateCategory(categoryData);
-    if (error) throw ApiError.badRequest(error);
-
     const category = await CategoryRepository.findById(id);
     if (!category) throw ApiError.notFound("Category not found");
+
+    const error = validateCategory(categoryData);
+    if (error) throw ApiError.badRequest(error);
 
     return CategoryRepository.update(id, categoryData);
   }
 
   async partialUpdate(id: string, categoryData: CategoryRequest) {
-    const error = validatePartialCategory(categoryData);
-    if (error) throw ApiError.badRequest(error);
-
     const category = await CategoryRepository.findById(id);
     if (!category) throw ApiError.notFound("Category not found");
 
-    return CategoryRepository.partialUpdate(id, categoryData);
+    const error = validatePartialCategory(categoryData);
+    if (error) throw ApiError.badRequest(error);
+
+    return CategoryRepository.update(id, categoryData);
   }
 }
 

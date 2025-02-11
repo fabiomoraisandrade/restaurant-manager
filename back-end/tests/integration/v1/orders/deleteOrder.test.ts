@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3333/api/v1/category";
+const baseURL = "http://localhost:3333/api/v1/order";
 let authToken: string;
-let createdCategory: any;
+let createdOrder: any;
 
 beforeAll(async () => {
   try {
@@ -15,26 +15,23 @@ beforeAll(async () => {
     const response = await axios.post(loginURL, credentials);
     authToken = response.data.token;
 
-    createdCategory = await axios.post(
+    createdOrder = await axios.post(
       baseURL,
       {
-        name: "Categoria Teste",
+        table: 900,
+        name: "Order Teste",
       },
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      },
+      { headers: { Authorization: `Bearer ${authToken}` } },
     );
   } catch (e) {
     console.error(`Erro ao criar categoria para testar o delete: ${e.message}`);
   }
 });
 
-describe("DELETE /api/v1/category", () => {
-  test("deve retornar status 204 para categoria deletada", async () => {
+describe("DELETE /api/v1/order", () => {
+  test("deve retornar status 204 para order deletada", async () => {
     const response = await axios
-      .delete(`${baseURL}/${createdCategory.data.id}`, {
+      .delete(`${baseURL}/${createdOrder.data.id}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -44,7 +41,7 @@ describe("DELETE /api/v1/category", () => {
     expect(response.status).toBe(204);
   });
 
-  test("deve retornar status 404 para categoria não encontrada", async () => {
+  test("deve retornar status 404 para order não encontrada", async () => {
     const response = await axios
       .delete(`${baseURL}/id-que-não-existe`, {
         headers: {
