@@ -3,7 +3,10 @@ import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
 import UserRepository from "../../repositories/UserRepository";
 import { UserRequest, LoginRequest } from "../../types/UserTypes";
-import validateUser from "../../validators/userValidator";
+import {
+  validateUser,
+  validatePartialUser,
+} from "../../validators/userValidator";
 import validateLogin from "../../validators/loginValidator";
 import { ApiError } from "../../errors/apiError";
 
@@ -34,6 +37,43 @@ class UserService {
     userData.password = passwordHash;
 
     return UserRepository.create(userData);
+  }
+
+  async delete(id: string) {
+    const user = await UserRepository.findById(id);
+    if (!user) throw ApiError.notFound("User not found");
+
+    await UserRepository.delete(id);
+    return user;
+  }
+
+  async update(id: string, userData: UserRequest) {
+    const user = await UserRepository.findById(id);
+    if (!user) throw ApiError.notFound("User not found");
+
+    const error = validateUser(userData);
+    if (error) throw ApiError.badRequest(error);
+
+    const passwordHash = await hash(userData.password, 8);
+    userData.password = passwordHash;
+
+    return UserRepository.update(id, userData);
+  }
+
+  async partialUpdate(id: string, userData: UserRequest) {
+    const user = await UserRepository.findById(id);
+    if (!user) throw ApiError.notFound("User not found");
+
+    const error = validatePartialUser(userData);
+    if (error) throw ApiError.badRequest(error);
+
+    if (userData.password) {
+      const passwordHash = await hash(userData.password, 8);
+      userData.password = passwordHash;
+    }
+
+    const updatedUser = await UserRepository.update(id, userData);
+    return updatedUser;
   }
 
   async login(loginData: LoginRequest) {

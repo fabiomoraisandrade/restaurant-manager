@@ -1,26 +1,23 @@
 import axios from "axios";
-import UserService from "../../../../src/services/v1/UserService";
-import UserRepository from "../../../../src/repositories/UserRepository";
 
-jest.mock("../../../../src/repositories/UserRepository");
+const baseURL = "http://localhost:3333/api/v1/login";
 
 describe("POST /api/v1/login", () => {
-  const baseURL = "http://localhost:3333/api/v1/login";
   test("deve retornar status 400 se o email não for enviado", async () => {
     const response = await axios
       .post(baseURL, {
-        password: "123456",
+        password: "senha@teste",
       })
       .catch((err) => err.response);
 
     expect(response.status).toBe(400);
-    // expect(response.data).toHaveProperty("message", "email is required");
+    expect(response.data).toHaveProperty("message", "email is required");
   });
 
   test("deve retornar status 400 se a senha não for enviada", async () => {
     const response = await axios
       .post(baseURL, {
-        email: "test@example.com",
+        email: "teste@login.com",
       })
       .catch((err) => err.response);
 
@@ -31,8 +28,8 @@ describe("POST /api/v1/login", () => {
   test("deve retornar status 401 para usuário que não existe ou que não foi autenticado", async () => {
     const response = await axios
       .post(baseURL, {
-        email: "test@example.com",
-        password: "123456",
+        email: "teste@login.com",
+        password: "senha@teste",
       })
       .catch((err) => err.response);
 

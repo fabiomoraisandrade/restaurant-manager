@@ -41,6 +41,22 @@ class UserRepository {
       },
     });
   }
+
+  async delete(id: string) {
+    return prismaClient.user.delete({
+      where: { id },
+    });
+  }
+
+  async update(id: string, data: UserRequest) {
+    return prismaClient.user.update({
+      where: { id },
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
+    });
+  }
 }
 
 export default new UserRepository();

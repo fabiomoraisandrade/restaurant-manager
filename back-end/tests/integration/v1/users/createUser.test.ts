@@ -1,28 +1,47 @@
 import axios from "axios";
-import prismaClient from "../../../../src/prisma";
 
-// Limpeza do banco de dados antes de cada teste
-beforeEach(async () => {
-  await prismaClient.$transaction([prismaClient.user.deleteMany()]);
+const baseURL = "http://localhost:3333/api/v1/users";
+let authToken: string;
+let createdUser1: any;
+let createdUser2: any;
+
+beforeAll(async () => {
+  try {
+    const loginURL = "http://localhost:3333/api/v1/login";
+    const credentials = {
+      email: "email1@teste.com",
+      password: "123456",
+    };
+
+    const response = await axios.post(loginURL, credentials);
+    authToken = response.data.token;
+  } catch (e) {
+    console.error(`Erro ao fazer login: ${e.message}`);
+  }
 });
 
-// Limpeza extra após cada teste (opcional)
-afterEach(async () => {
-  await prismaClient.$transaction([prismaClient.user.deleteMany()]);
-});
-
-// Fecha a conexão com o Prisma após todos os testes
 afterAll(async () => {
-  await prismaClient.$disconnect();
+  try {
+    await axios.delete(`${baseURL}/${createdUser1.data.id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+
+    await axios.delete(`${baseURL}/${createdUser2.data.id}`, {
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+  } catch (e) {
+    console.error(
+      `Erro ao deletar usuários criados ao final do teste: ${e.message}`,
+    );
+  }
 });
 
 describe("POST /api/v1/users", () => {
-  const baseURL = "http://localhost:3333/api/v1/users";
   test("deve retornar status 400 se o nome não for enviado", async () => {
     const response = await axios
       .post(baseURL, {
-        email: "test@example.com",
-        password: "123456",
+        email: "teste@exemplo.com",
+        password: "senha@teste",
       })
       .catch((err) => err.response);
     expect(response.status).toBe(400);
@@ -32,8 +51,8 @@ describe("POST /api/v1/users", () => {
   test("deve retornar status 400 se o email não for enviado", async () => {
     const response = await axios
       .post(baseURL, {
-        name: "Jane Doe",
-        password: "123456",
+        name: "Usuario Teste",
+        password: "senha@teste",
       })
       .catch((err) => err.response);
 
@@ -44,8 +63,8 @@ describe("POST /api/v1/users", () => {
   test("deve retornar status 400 se a senha não for enviada", async () => {
     const response = await axios
       .post(baseURL, {
-        name: "Jane Doe",
-        email: "test@example.com",
+        name: "Usuario Teste",
+        email: "teste@exemplo.com",
       })
       .catch((err) => err.response);
 
@@ -54,45 +73,40 @@ describe("POST /api/v1/users", () => {
   });
 
   test("deve lançar erro se o email já está registrado", async () => {
-    // Cria um usuário com o email previamente registrado
-    const existingUser = await axios.post(baseURL, {
-      name: "Nome Existente",
+    createdUser1 = await axios.post(baseURL, {
+      name: "Usuario Teste",
       email: "email@teste.com",
-      password: "senha123",
+      password: "senha@teste",
     });
 
-    // Tenta criar um novo usuário com o mesmo email
-    const response = await axios
+    const newUser = await axios
       .post(baseURL, {
-        name: "Novo Nome",
-        email: existingUser.data.email,
-        password: "novaSenha123",
+        name: "Novo Usuario Teste",
+        email: createdUser1.data.email,
+        password: "novasenha@teste",
       })
       .catch((err) => err.response);
 
-    expect(response.status).toBe(409);
-    expect(response.data).toHaveProperty(
+    expect(newUser.status).toBe(409);
+    expect(newUser.data).toHaveProperty(
       "message",
       "Email is already registered.",
     );
   });
 
   test("deve criar um usuário com sucesso", async () => {
-    // Gera um email aleatório para evitar conflitos
     const randomEmail = `user${Date.now()}@example.com`;
 
-    const response = await axios.post(baseURL, {
-      name: "Usuário Teste",
+    createdUser2 = await axios.post(baseURL, {
+      name: "Usuario Teste",
       email: randomEmail,
-      password: "senhaSegura123",
+      password: "outrasenha@teste",
     });
 
-    // Verifica se o status é 201 (criado com sucesso)
-    expect(response.status).toBe(201);
+    expect(createdUser2.status).toBe(201);
 
-    // Verifica se as propriedades do usuário criado estão presentes na resposta
-    expect(response.data).toHaveProperty("id");
-    expect(response.data).toHaveProperty("name", "Usuário Teste");
-    expect(response.data).toHaveProperty("email", randomEmail);
+    expect(createdUser2.data).toHaveProperty("id");
+    expect(createdUser2.data).toHaveProperty("name", "Usuario Teste");
+    expect(createdUser2.data).toHaveProperty("email", randomEmail);
   });
 });
