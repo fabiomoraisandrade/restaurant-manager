@@ -89,7 +89,9 @@ describe("PATCH /api/v1/order", () => {
 
     expect(response.status).toBe(404);
   });
+});
 
+describe("PATCH /api/v1/order/:id/send", () => {
   test("deve retornar status 200 e draft false para order enviada", async () => {
     const response = await axios
       .patch(
@@ -104,7 +106,9 @@ describe("PATCH /api/v1/order", () => {
     expect(response.status).toBe(200);
     expect(response.data).toHaveProperty("draft", false);
   });
+});
 
+describe("PATCH /api/v1/order/:id/finish", () => {
   test("deve retornar status 200 e status da order true para order enviada", async () => {
     const response = await axios
       .patch(
