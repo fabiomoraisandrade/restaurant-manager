@@ -35,6 +35,20 @@ class OrderItemController {
 
     return res.status(StatusCodes.NO_CONTENT).end();
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const updatedOrderItem = await OrderItemService.update(id, req.body);
+
+    return res.status(StatusCodes.OK).json(updatedOrderItem);
+  }
+
+  async partialUpdate(req: Request, res: Response) {
+    const { id } = req.params;
+    const updatedOrderItem = await OrderItemService.partialUpdate(id, req.body);
+
+    return res.status(StatusCodes.OK).json(updatedOrderItem);
+  }
 }
 
 export default OrderItemController;

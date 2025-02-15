@@ -37,6 +37,16 @@ class OrderItemRepository {
       where: { id: id },
     });
   }
+
+  async update(id: string, data: OrderItemRequest) {
+    return prismaClient.orderItem.update({
+      where: { id: id },
+      data: {
+        ...data,
+        updated_at: new Date(),
+      },
+    });
+  }
 }
 
 export default new OrderItemRepository();

@@ -81,7 +81,7 @@ afterAll(async () => {
     });
   } catch (e) {
     console.error(
-      `Erro ao deletar produto, categoria e order ao final do teste de criar orderItem: ${e.message}`,
+      `Erro ao deletar produto, categoria, order e orderItem ao final do teste de criar orderItem: ${e.message}`,
     );
   }
 });
@@ -142,6 +142,44 @@ describe("POST /api/v1/orderItem", () => {
       .catch((err) => err.response);
     expect(response.status).toBe(400);
     expect(response.data).toHaveProperty("message", "amount is required");
+  });
+
+  test("deve retornar status 404 para order não encontrada", async () => {
+    const response = await axios
+      .post(
+        baseURL,
+        {
+          order_id: "id-que-não-existe",
+          product_id: `${createdProduct.data.id}`,
+          amount: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      )
+      .catch((err) => err.response);
+    expect(response.status).toBe(404);
+  });
+
+  test("deve retornar status 404 para produto não encontrado", async () => {
+    const response = await axios
+      .post(
+        baseURL,
+        {
+          order_id: `${createdOrder.data.id}`,
+          product_id: "id-que-não-existe",
+          amount: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        },
+      )
+      .catch((err) => err.response);
+    expect(response.status).toBe(404);
   });
 
   test("deve criar um orderItem com sucesso", async () => {

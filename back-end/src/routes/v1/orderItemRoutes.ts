@@ -21,5 +21,11 @@ orderItemRouter.delete(
   authMiddleware,
   new OrderItemController().delete,
 );
+orderItemRouter.put("/:id", authMiddleware, new OrderItemController().update);
+orderItemRouter.patch(
+  "/:id",
+  authMiddleware,
+  new OrderItemController().partialUpdate,
+);
 
 export default orderItemRouter;
