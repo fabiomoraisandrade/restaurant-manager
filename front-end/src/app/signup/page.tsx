@@ -24,7 +24,7 @@ export default function Signup() {
         password,
       });
     } catch (err) {
-      console.log(`Erro ao cadastrar usuário: ${err}`);
+      console.error(`Erro ao cadastrar usuário: ${err}`);
     }
 
     redirect("/");
