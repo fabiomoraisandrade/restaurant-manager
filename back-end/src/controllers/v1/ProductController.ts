@@ -2,6 +2,14 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../errors/apiError";
 import ProductService from "../../services/v1/ProductService";
+import { UploadedFile } from "express-fileupload";
+import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 class ProductController {
   async findAll(_req: Request, res: Response) {
@@ -25,7 +33,7 @@ class ProductController {
   }
 
   async create(req: Request, res: Response) {
-    if (!req.file) {
+    if (!req.files || Object.keys(req.files).length === 0) {
       throw ApiError.badRequest("file is required");
     }
 
@@ -36,12 +44,28 @@ class ProductController {
     const { name, price, description, category_id } = req.body;
     const priceNumber = parseFloat(price.replace(",", "."));
     const validatedPrice = Number(priceNumber.toFixed(2));
-    const { filename: banner } = req.file;
+
+    const file: UploadedFile = req.files["file"];
+    const resultFile: UploadApiResponse = await new Promise(
+      (resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream({}, function (error, result) {
+            if (error) {
+              reject(error);
+              return;
+            }
+
+            resolve(result);
+          })
+          .end(file.data);
+      },
+    );
+
     const product = await ProductService.create({
       name,
       price: validatedPrice,
       description,
-      banner,
+      banner: resultFile.url,
       category_id,
     });
 

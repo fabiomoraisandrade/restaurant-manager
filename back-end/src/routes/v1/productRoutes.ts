@@ -18,12 +18,13 @@ productRouter.get(
   authMiddleware,
   new ProductController().getProductById,
 );
-productRouter.post(
-  "/",
-  authMiddleware,
-  upload.single("file"),
-  new ProductController().create,
-);
+// productRouter.post(
+//   "/",
+//   authMiddleware,
+//   upload.single("file"),
+//   new ProductController().create,
+// );
+productRouter.post("/", authMiddleware, new ProductController().create);
 productRouter.delete("/:id", authMiddleware, new ProductController().delete);
 productRouter.put(
   "/:id",
