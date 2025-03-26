@@ -3,8 +3,12 @@ import SignIn from "@/src/pages/SignIn";
 
 export default function Index() {
   return (
-    <View >
-      <StatusBar backgroundColor="#1d1d2e" barStyle="light-content" translucent={false} />
+    <View>
+      <StatusBar
+        backgroundColor="#1d1d2e"
+        barStyle="light-content"
+        translucent={false}
+      />
       <SignIn />
     </View>
   );
