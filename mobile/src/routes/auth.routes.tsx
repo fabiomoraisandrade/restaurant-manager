@@ -5,11 +5,15 @@ import SignIn from "../pages/SignIn";
 const Stack = createNativeStackNavigator();
 
 function AuthRoutes() {
-    return(
-        <Stack.Navigator>
-            <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} ></Stack.Screen>
-        </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{ headerShown: false }}
+      ></Stack.Screen>
+    </Stack.Navigator>
+  );
 }
 
 export default AuthRoutes;

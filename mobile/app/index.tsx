@@ -1,6 +1,6 @@
 import { Text, View, StatusBar } from "react-native";
 import Routes from "@/src/routes";
-import { AuthProvider } from "../src/contexts/AuthContext"
+import { AuthProvider } from "../src/contexts/AuthContext";
 
 export default function Index() {
   return (
@@ -11,7 +11,7 @@ export default function Index() {
           barStyle="light-content"
           translucent={false}
         />
-        <Routes/>
+        <Routes />
       </AuthProvider>
     </>
   );
