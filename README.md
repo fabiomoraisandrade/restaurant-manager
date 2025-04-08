@@ -100,8 +100,8 @@ Cada parte do sistema é modularizada para garantir a escalabilidade e manutenç
 ### 1. Clone o Repositório
 
 ```bash
-git clone <https://github.com/fabiomoraisandrade/restaurant-manager.git>
-cd <restaurant-manager>
+git clone https://github.com/fabiomoraisandrade/restaurant-manager.git
+cd restaurant-manager
 ```
 
 ### 2. Instale as Dependências
