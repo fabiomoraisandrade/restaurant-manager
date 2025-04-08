@@ -89,9 +89,10 @@ Cada parte do sistema é modularizada para garantir a escalabilidade e manutenç
 
 ## ☁️ Hospedagem
 
-- 🔗 **Backend:** Hospedado na Vercel
-- 🔗 **Frontend:** Hospedado na Vercel
-- 📱 **Mobile:** Ainda não distribuído via lojas. Executado localmente via **Expo Go**
+- 🔗 **Frontend (Vercel):** [https://restaurant-manager-front.vercel.app/](https://restaurant-manager-front.vercel.app/)
+- 🔗 **Backend (Vercel):** [https://restaurant-manager-dun.vercel.app/](https://restaurant-manager-dun.vercel.app/)
+- 🛢️ **Banco de dados (Produção):** [NEON - PostgreSQL Cloud](https://neon.tech)
+- 📱 **Mobile:** Executado localmente via **Expo Go**
 
 ---
 
